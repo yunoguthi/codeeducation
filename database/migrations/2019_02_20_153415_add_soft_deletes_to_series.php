@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRoleToUserTable extends Migration
+class AddSoftDeletesToSeries extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddRoleToUserTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->smallInteger( 'role');
+        Schema::table('series', function (Blueprint $table) {
+             $table->softDeletes();
         });
     }
 
@@ -25,8 +25,8 @@ class AddRoleToUserTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
+        Schema::table('series', function (Blueprint $table) {
+            $table->dropSoftDeletes();
         });
     }
 }

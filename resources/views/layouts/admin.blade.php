@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
     <div id="app">
@@ -26,6 +27,14 @@
                     [
                         'link' => route('admin.categories.index'),
                         'title' => 'Categoria'
+                    ],
+                    [
+                        'link' => route('admin.series.index'),
+                        'title' => 'Série'
+                    ],
+                    [
+                        'link' => route('admin.videos.index'),
+                        'title' => 'Video'
                     ],
 
                 ];

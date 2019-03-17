@@ -3,13 +3,14 @@
 namespace CodeFlix\Models;
 
 use Bootstrapper\Interfaces\TableInterface;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 class Category extends Model implements TableInterface
 {
     use TransformableTrait;
+    use SoftDeletes;
 
     protected $fillable = ['name'];
 

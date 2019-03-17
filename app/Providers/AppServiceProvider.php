@@ -2,7 +2,11 @@
 
 namespace CodeFlix\Providers;
 
+use CodeFlix\Models\Video;
+use Dingo\Api\Exception\Handler;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Dusk\DuskServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Video::updated(function($video){
+            if(!$video->completed) {
+                if (
+                    $video->file != null &&
+                    $video->thumb != null &&
+                    $video->duration != null
+                ) {
+                    $video->completed = true;
+                    $video->save();
+                }
+            }
+        });
     }
 
     /**
@@ -25,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+            $this->app->register(DuskServiceProvider::class);
         }
 
         $this->app->bind(
@@ -41,5 +57,10 @@ class AppServiceProvider extends ServiceProvider
             },
             true
         );
+
+        $handler = app(Handler::class);
+        $handler->register(function(AuthenticationException $exception){
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        });
     }
 }

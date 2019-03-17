@@ -14,8 +14,8 @@
                  ->callback('Ações', function($field, $category){
                      $linkEdit = route('admin.categories.edit',['category' => $category->id]);
                      $linkShow = route('admin.categories.show',['category' => $category->id]);
-                     return Button::link(Icon::create('pencil'))->asLinkTo($linkEdit).'|'.
-                     Button::link(Icon::create('remove'))->asLinkTo($linkShow);
+                     return Button::link(Icon::create('pencil'))->asLinkTo($linkEdit)->addAttributes(['id' => "edit_{$category->id}"]).'|'.
+                     Button::link(Icon::create('remove'))->asLinkTo($linkShow)->addAttributes(['id' => "delete_{$category->id}"]);
                  })
             !!}
         </div>

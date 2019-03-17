@@ -6,12 +6,13 @@
             <h3>Ver Categoria</h3>
 
             <?php $iconEdit = Icon::create('pencil'); ?>
-            {!! Button::primary($iconEdit)->asLinkTo(route('admin.categories.edit',['category' => $category->id ])) !!}
+            {!! Button::primary($iconEdit)->asLinkTo(route('admin.categories.edit',['category' => $category->id ]))->addAttributes(['id' => "edit_{$category->id}"]) !!}
 
             <?php $iconDestroy = Icon::create('remove'); ?>
             {!! Button::danger($iconDestroy)
                 ->asLinkTo(route('admin.categories.destroy',['category' => $category->id ]))
                 ->addAttributes(['onclick' => "event.preventDefault(); document.getElementById(\"form-delete\").submit();"])
+                ->addAttributes(['id' => "delete_{$category->id}"])
              !!}
 
             <?php $formDelete = FormBuilder::plain([
