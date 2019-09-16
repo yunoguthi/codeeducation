@@ -25,7 +25,7 @@ class XmlErrorParser
 
         $body = $response->getBody();
         if ($body->getSize() > 0) {
-            $this->parseBody($this->parseXml($body, $response), $data);
+            $this->parseBody($this->parseXml($body), $data);
         } else {
             $this->parseHeaders($response, $data);
         }

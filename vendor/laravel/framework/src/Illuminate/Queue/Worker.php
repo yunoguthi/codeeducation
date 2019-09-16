@@ -131,7 +131,7 @@ class Worker
      */
     protected function registerTimeoutHandler($job, WorkerOptions $options)
     {
-        if ($this->supportsAsyncSignals()) {
+        if ($options->timeout > 0 && $this->supportsAsyncSignals()) {
             // We will register a signal handler for the alarm signal so that we can kill this
             // process if it is running too long because it has frozen. This uses the async
             // signals supported in recent versions of PHP to accomplish it conveniently.
@@ -139,9 +139,7 @@ class Worker
                 $this->kill(1);
             });
 
-            pcntl_alarm(
-                max($this->timeoutForJob($job, $options), 0)
-            );
+            pcntl_alarm($this->timeoutForJob($job, $options) + $options->sleep);
         }
     }
 
@@ -247,9 +245,7 @@ class Worker
 
             $this->stopWorkerIfLostConnection($e);
         } catch (Throwable $e) {
-            $this->exceptions->report($e = new FatalThrowableError($e));
-
-            $this->stopWorkerIfLostConnection($e);
+            $this->exceptions->report(new FatalThrowableError($e));
         }
     }
 
@@ -270,9 +266,7 @@ class Worker
 
             $this->stopWorkerIfLostConnection($e);
         } catch (Throwable $e) {
-            $this->exceptions->report($e = new FatalThrowableError($e));
-
-            $this->stopWorkerIfLostConnection($e);
+            $this->exceptions->report(new FatalThrowableError($e));
         }
     }
 
@@ -343,11 +337,9 @@ class Worker
             // First, we will go ahead and mark the job as failed if it will exceed the maximum
             // attempts it is allowed to run the next time we process it. If so we will just
             // go ahead and mark it as failed now so we do not have to release this again.
-            if (! $job->hasFailed()) {
-                $this->markJobAsFailedIfWillExceedMaxAttempts(
-                    $connectionName, $job, (int) $options->maxTries, $e
-                );
-            }
+            $this->markJobAsFailedIfWillExceedMaxAttempts(
+                $connectionName, $job, (int) $options->maxTries, $e
+            );
 
             $this->raiseExceptionOccurredJobEvent(
                 $connectionName, $job, $e

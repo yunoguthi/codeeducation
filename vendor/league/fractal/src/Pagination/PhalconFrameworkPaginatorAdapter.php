@@ -15,26 +15,21 @@ namespace League\Fractal\Pagination;
  * A paginator adapter for PhalconPHP/pagination.
  *
  * @author Thien Tran <fcduythien@gmail.com>
- * @author Nikolaos Dimopoulos <nikos@phalconphp.com>
- *
+ * 
  */
 class PhalconFrameworkPaginatorAdapter implements PaginatorInterface
 {
     /**
      * A slice of the result set to show in the pagination
      *
-     * @var \stdClass
+     * @var \Phalcon\Paginator\AdapterInterface
      */
     private $paginator;
 
-    /**
-     * PhalconFrameworkPaginatorAdapter constructor.
-     *
-     * @param stdClass $paginator
-     */
+    
     public function __construct($paginator)
     {
-        $this->paginator = $paginator;
+        $this->paginator = $paginator->getPaginate();
     }
 
     /**

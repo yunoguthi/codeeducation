@@ -7,7 +7,7 @@ namespace Aws\CloudFront;
 class Signer
 {
     private $keyPairId;
-    private $pkHandle;
+    private $pk;
 
     /**
      * A signer for creating the signature values used in CloudFront signed URLs
@@ -34,17 +34,9 @@ class Signer
             throw new \InvalidArgumentException("PK file not found: $privateKey");
         }
 
-        $this->pkHandle = openssl_pkey_get_private("file://$privateKey");
-
-        if (!$this->pkHandle) {
-            throw new \InvalidArgumentException(openssl_error_string());
-        }
+        $this->pk = file_get_contents($privateKey);
     }
 
-    public function __destruct()
-    {
-        $this->pkHandle && openssl_pkey_free($this->pkHandle);
-    }
 
     /**
      * Create the values used to construct signed URLs and cookies.
@@ -74,7 +66,6 @@ class Signer
             $policy = preg_replace('/\s/s', '', $policy);
             $signatureHash['Policy'] = $this->encode($policy);
         } elseif ($resource && $expires) {
-            $expires = (int) $expires; // Handle epoch passed as string
             $policy = $this->createCannedPolicy($resource, $expires);
             $signatureHash['Expires'] = $expires;
         } else {
@@ -105,7 +96,7 @@ class Signer
     private function sign($policy)
     {
         $signature = '';
-        openssl_sign($policy, $signature, $this->pkHandle);
+        openssl_sign($policy, $signature, $this->pk);
 
         return $signature;
     }

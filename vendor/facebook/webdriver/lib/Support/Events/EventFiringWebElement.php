@@ -392,20 +392,20 @@ class EventFiringWebElement implements WebDriverElement, WebDriverLocatable
 
     /**
      * @param mixed $method
-     * @param mixed ...$arguments
      */
-    protected function dispatch($method, ...$arguments)
+    protected function dispatch($method)
     {
         if (!$this->dispatcher) {
             return;
         }
-
+        $arguments = func_get_args();
+        unset($arguments[0]);
         $this->dispatcher->dispatch($method, $arguments);
     }
 
     /**
      * @param WebDriverElement $element
-     * @return static
+     * @return EventFiringWebElement
      */
     protected function newElement(WebDriverElement $element)
     {

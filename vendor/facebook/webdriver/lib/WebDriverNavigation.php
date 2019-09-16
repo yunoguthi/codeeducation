@@ -75,7 +75,6 @@ class WebDriverNavigation
     /**
      * Navigate to the given URL.
      *
-     * @see WebDriver::get()
      * @param string $url
      * @return WebDriverNavigation The instance.
      */

@@ -133,7 +133,7 @@ class EventFiringWebDriver implements WebDriver, JavaScriptExecutor
     }
 
     /**
-     * @param string $script
+     * @param       $script
      * @param array $arguments
      * @throws WebDriverException
      * @return mixed
@@ -161,7 +161,7 @@ class EventFiringWebDriver implements WebDriver, JavaScriptExecutor
     }
 
     /**
-     * @param string $script
+     * @param       $script
      * @param array $arguments
      * @throws WebDriverException
      * @return mixed
@@ -396,14 +396,15 @@ class EventFiringWebDriver implements WebDriver, JavaScriptExecutor
 
     /**
      * @param mixed $method
-     * @param mixed ...$arguments
      */
-    protected function dispatch($method, ...$arguments)
+    protected function dispatch($method)
     {
         if (!$this->dispatcher) {
             return;
         }
 
+        $arguments = func_get_args();
+        unset($arguments[0]);
         $this->dispatcher->dispatch($method, $arguments);
     }
 

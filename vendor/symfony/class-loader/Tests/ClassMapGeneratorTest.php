@@ -14,9 +14,6 @@ namespace Symfony\Component\ClassLoader\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\ClassLoader\ClassMapGenerator;
 
-/**
- * @group legacy
- */
 class ClassMapGeneratorTest extends TestCase
 {
     /**
@@ -74,8 +71,8 @@ class ClassMapGeneratorTest extends TestCase
 
     public function getTestCreateMapTests()
     {
-        $data = [
-            [__DIR__.'/Fixtures/Namespaced', [
+        $data = array(
+            array(__DIR__.'/Fixtures/Namespaced', array(
                 'Namespaced\\Bar' => realpath(__DIR__).'/Fixtures/Namespaced/Bar.php',
                 'Namespaced\\Foo' => realpath(__DIR__).'/Fixtures/Namespaced/Foo.php',
                 'Namespaced\\Baz' => realpath(__DIR__).'/Fixtures/Namespaced/Baz.php',
@@ -84,20 +81,20 @@ class ClassMapGeneratorTest extends TestCase
                 'Namespaced\\WithHaltCompiler' => realpath(__DIR__).'/Fixtures/Namespaced/WithHaltCompiler.php',
                 'Namespaced\\WithDirMagic' => realpath(__DIR__).'/Fixtures/Namespaced/WithDirMagic.php',
                 'Namespaced\\WithFileMagic' => realpath(__DIR__).'/Fixtures/Namespaced/WithFileMagic.php',
-            ]],
-            [__DIR__.'/Fixtures/beta/NamespaceCollision', [
+            )),
+            array(__DIR__.'/Fixtures/beta/NamespaceCollision', array(
                 'NamespaceCollision\\A\\B\\Bar' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/A/B/Bar.php',
                 'NamespaceCollision\\A\\B\\Foo' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/A/B/Foo.php',
                 'NamespaceCollision\\C\\B\\Bar' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/C/B/Bar.php',
                 'NamespaceCollision\\C\\B\\Foo' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/C/B/Foo.php',
-            ]],
-            [__DIR__.'/Fixtures/Pearlike', [
+            )),
+            array(__DIR__.'/Fixtures/Pearlike', array(
                 'Pearlike_Foo' => realpath(__DIR__).'/Fixtures/Pearlike/Foo.php',
                 'Pearlike_Bar' => realpath(__DIR__).'/Fixtures/Pearlike/Bar.php',
                 'Pearlike_Baz' => realpath(__DIR__).'/Fixtures/Pearlike/Baz.php',
                 'Pearlike_WithComments' => realpath(__DIR__).'/Fixtures/Pearlike/WithComments.php',
-            ]],
-            [__DIR__.'/Fixtures/classmap', [
+            )),
+            array(__DIR__.'/Fixtures/classmap', array(
                 'Foo\\Bar\\A' => realpath(__DIR__).'/Fixtures/classmap/sameNsMultipleClasses.php',
                 'Foo\\Bar\\B' => realpath(__DIR__).'/Fixtures/classmap/sameNsMultipleClasses.php',
                 'A' => realpath(__DIR__).'/Fixtures/classmap/multipleNs.php',
@@ -108,19 +105,19 @@ class ClassMapGeneratorTest extends TestCase
                 'ClassMap\\SomeInterface' => realpath(__DIR__).'/Fixtures/classmap/SomeInterface.php',
                 'ClassMap\\SomeParent' => realpath(__DIR__).'/Fixtures/classmap/SomeParent.php',
                 'ClassMap\\SomeClass' => realpath(__DIR__).'/Fixtures/classmap/SomeClass.php',
-            ]],
-            [__DIR__.'/Fixtures/php5.4', [
+            )),
+            array(__DIR__.'/Fixtures/php5.4', array(
                 'TFoo' => __DIR__.'/Fixtures/php5.4/traits.php',
                 'CFoo' => __DIR__.'/Fixtures/php5.4/traits.php',
                 'Foo\\TBar' => __DIR__.'/Fixtures/php5.4/traits.php',
                 'Foo\\IBar' => __DIR__.'/Fixtures/php5.4/traits.php',
                 'Foo\\TFooBar' => __DIR__.'/Fixtures/php5.4/traits.php',
                 'Foo\\CBar' => __DIR__.'/Fixtures/php5.4/traits.php',
-            ]],
-            [__DIR__.'/Fixtures/php5.5', [
+            )),
+            array(__DIR__.'/Fixtures/php5.5', array(
                 'ClassCons\\Foo' => __DIR__.'/Fixtures/php5.5/class_cons.php',
-            ]],
-        ];
+            )),
+        );
 
         return $data;
     }
@@ -130,15 +127,15 @@ class ClassMapGeneratorTest extends TestCase
         $finder = new \Symfony\Component\Finder\Finder();
         $finder->files()->in(__DIR__.'/Fixtures/beta/NamespaceCollision');
 
-        $this->assertEqualsNormalized([
+        $this->assertEqualsNormalized(array(
             'NamespaceCollision\\A\\B\\Bar' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/A/B/Bar.php',
             'NamespaceCollision\\A\\B\\Foo' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/A/B/Foo.php',
             'NamespaceCollision\\C\\B\\Bar' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/C/B/Bar.php',
             'NamespaceCollision\\C\\B\\Foo' => realpath(__DIR__).'/Fixtures/beta/NamespaceCollision/C/B/Foo.php',
-        ], ClassMapGenerator::createMap($finder));
+        ), ClassMapGenerator::createMap($finder));
     }
 
-    protected function assertEqualsNormalized($expected, $actual, $message = '')
+    protected function assertEqualsNormalized($expected, $actual, $message = null)
     {
         foreach ($expected as $ns => $path) {
             $expected[$ns] = str_replace('\\', '/', $path);
