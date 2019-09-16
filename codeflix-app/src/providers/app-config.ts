@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import {Injectable} from "@angular/core";
 import { Storage } from "@ionic/storage";
@@ -45,4 +46,20 @@ export class AppConfig{
         return ${this.baseFilePath}/${this.appFileFolder};
     }
 
+=======
+
+import {Injectable} from "@angular/core";
+
+@Injectable()
+export class AppConfig{
+    private off:boolean;
+
+    getOff():boolean{
+        return this.off;
+    }
+
+    setOff(off:boolean){
+        this.off = off;
+    }
+>>>>>>> 71264fc544af9982104d1172c51d8a1fa9fa3377
 }

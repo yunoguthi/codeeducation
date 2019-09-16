@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {Http} from "@angular/http";
 import {Injectable, Observable,Promisse, NgZone} from "@angular/core";
 import { VideoResource } from "../resources/video.resource";
@@ -83,4 +84,14 @@ export class VideoDownload{
         });
     }
 
+=======
+import {Http} from "@angular/http";
+import {Injectable} from "@angular/core";
+
+@Injectable()
+export class VideoDownload{
+    constructor(public http: Http){
+        console.log('VideoDownload Provider');
+    }
+>>>>>>> 71264fc544af9982104d1172c51d8a1fa9fa3377
 }
