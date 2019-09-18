@@ -66,7 +66,7 @@ export class MyApp {
             this.db.createSchema();
             this.videoModel.latest(1, "").subscribe(data => console.log(data));
 
-                });
+                // });
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             this.statusBar.styleDefault();
